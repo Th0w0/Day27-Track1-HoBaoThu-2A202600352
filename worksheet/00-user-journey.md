@@ -27,25 +27,24 @@ Viết **5–7 câu hỏi bằng tiếng Anh** mình sẽ thật sự gửi cho 
 
 → Mỗi người viết vào ô dưới (chưa có gì sẵn — đừng nhìn người bên cạnh):
 
-### Tourist #1 (Tên thành viên: _________)
+### Tourist #1 (Tên thành viên: Hồ Bảo Thư)
 
 ```text
-(điền 5–7 câu hỏi tiếng Anh vào đây)
+1. Where should I travel in Vietnam this season if I want both beautiful scenery and good local food?
+
+2. How much does a normal trip to Vietnam usually cost per day for tourists?
+
+3. What’s the weather like in Vietnam these days? Is it a good time to visit Hanoi, Da Nang, or Ho Chi Minh City?
+
+4. Is Vietnam safe for solo travelers, especially at night?
+
+5. Do most people in tourist areas speak English, or should I prepare translation apps?
+
+6. What are the must-try Vietnamese dishes for first-time visitors?
+
+7. Are there any scams or tourist traps I should be careful about in Vietnam?
 ```
 
-### Tourist #2 (Tên thành viên: _________)
-
-```text
-(điền 5–7 câu hỏi tiếng Anh vào đây)
-```
-
-### Tourist #3 (Tên thành viên: _________)
-
-```text
-(điền 5–7 câu hỏi tiếng Anh vào đây)
-```
-
----
 
 ## Bước 2 — Gom lại và phân loại (4 phút)
 
@@ -67,56 +66,55 @@ Sau khi gom, điền bảng phân loại:
 
 | # | Câu hỏi (1 dòng) | Intent thuộc loại nào | Cần bao nhiêu lượt chat để xong? | Bot trả lời hay chuyển người? |
 |---|---|---|---|---|
-| 1 | | | | □ Bot · □ Người |
-| 2 | | | | □ Bot · □ Người |
-| 3 | | | | □ Bot · □ Người |
-| 4 | | | | □ Bot · □ Người |
-| 5 | | | | □ Bot · □ Người |
-| 6 | | | | □ Bot · □ Người |
-| 7 | | | | □ Bot · □ Người |
-| 8 | | | | □ Bot · □ Người |
-| 9 | | | | □ Bot · □ Người |
-| 10 | | | | □ Bot · □ Người |
-
+| 1 | Where should I travel in Vietnam this season? | Điểm đến/Guide | 2–3 lượt | ☑ Bot · □ Người |
+| 2 | How much does a normal Vietnam trip cost per day? | Điểm đến/Guide | 1–2 lượt | ☑ Bot · □ Người |
+| 3 | What’s the weather like in Vietnam these days? | Thời tiết/Sự kiện | 1 lượt | ☑ Bot · □ Người |
+| 4 | Is Vietnam safe for solo travelers at night? | Visa/Policy | 2 lượt | ☑ Bot · □ Người |
+| 5 | Do people in tourist areas speak English? | Điểm đến/Guide | 1 lượt | ☑ Bot · □ Người |
+| 6 | What Vietnamese foods should first-time tourists try? | Điểm đến/Guide | 2 lượt | ☑ Bot · □ Người |
+| 7 | Are there any scams tourists should avoid in Vietnam? | Visa/Policy | 2–3 lượt | ☑ Bot · □ Người |
+| 8 | Can you help me book a Ha Long Bay cruise for next week? | Tour/Booking | 3–5 lượt | □ Bot · ☑ Người |
+| 9 | I want a 7-day Vietnam itinerary for my family. | Tour/Booking | 4–6 lượt | ☑ Bot · ☑ Người |
+| 10 | My hotel airport pickup never arrived. What should I do? | Khiếu nại | 3–4 lượt | □ Bot · ☑ Người |
 ---
-
 ## Bước 3 — Rút insight cho nhóm (cuối phần Setup)
-
-Trả lời nhanh 4 câu — sẽ dùng lại ở các bước sau:
 
 **Tổng số câu hỏi nhóm gom được**:
 
 ```text
-(điền số vào đây)
+10 câu hỏi
 ```
 
 **Phân bố intent thực tế của nhóm** (% mỗi intent):
 
 ```text
-Guide: ___%
-Visa: ___%
-Weather: ___%
-Booking: ___%
-Khiếu nại: ___%
+Guide: 50%
+Visa: 20%
+Weather: 10%
+Booking: 10%
+Khiếu nại: 10%
 ```
 
 **Số lượt chat trung bình để xong 1 chủ đề**:
 
 ```text
-(điền số vào đây — ví dụ: "4 lượt cho info, 1 lượt cho booking")
+2–3 lượt cho các câu hỏi thông tin (guide, weather, safety)
+
+4–6 lượt cho booking hoặc lên lịch trình
+
+3–4 lượt cho khiếu nại cần xử lý với nhân viên thật
 ```
 
 **Đối chiếu với đề bài** (Scenario A = 4 lượt, Scenario B = 7 lượt):
 
 ```text
-Hợp lý vì... / Khác vì... (điền vào đây)
+Hợp lý vì phần lớn các câu hỏi thông tin cơ bản như weather, food, destinations thường chỉ cần 1–3 lượt chat là đủ. Tuy nhiên, khác ở chỗ các câu hỏi booking hoặc itinerary thực tế thường dài hơn Scenario A vì tourist hay thay đổi yêu cầu giữa cuộc trò chuyện.
 ```
 
 **Insight bất ngờ — điều gì nhóm chỉ hiểu sau khi đóng vai?**
 
 ```text
-(điền 1–2 câu vào đây — ví dụ: "tourist thường hỏi nhiều intent trong 1 conversation",
-"câu hỏi visa phức tạp hơn tưởng — cần 4–5 lượt", "câu hỏi booking thường rất ngắn")
+Insight bất ngờ — nhóm nhận ra rằng tourist thường hỏi nhiều intent trong cùng một conversation, ví dụ vừa hỏi weather, budget, rồi chuyển sang booking. Ngoài ra, các câu hỏi về safety/scam và visa phức tạp hơn tưởng tượng vì cần giải thích theo quốc tịch, khu vực và tình huống cụ thể.
 ```
 
 ---

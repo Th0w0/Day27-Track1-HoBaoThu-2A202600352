@@ -22,10 +22,10 @@ Tham khảo bảng pricing chi tiết tại `cost-reference-card.md` mục **3. 
 
 ## Config 1
 
-**Tên config** (gợi mở: "Budget Bot", "Bare Minimum", "Lean Mode", "Night Mode" — đặt tên có cá tính):
+**Tên config**:
 
 ```text
-(điền tên vào đây)
+Budget Backpacker Bot
 ```
 
 ### 3 Knobs
@@ -33,44 +33,34 @@ Tham khảo bảng pricing chi tiết tại `cost-reference-card.md` mục **3. 
 **① Model tier**:
 
 ```text
-Response model: __________________ → giá $_____ / $_____  per 1M tokens (input/output)
-Classifier model: __________________ → giá $_____ / $_____  per 1M tokens (hoặc keyword = $0)
+Response model: GPT-4o-mini → giá $0.15 / $0.60 per 1M tokens
+Classifier model: keyword routing → giá $0
 ```
 
 **② Web search**:
 
 ```text
-□ OFF
-□ ON selective — bật cho intent: __________________
-□ ON broad
+☑ ON selective — bật cho intent: Weather, Visa
 ```
 
 **③ History management**:
 
 ```text
-□ Last 3
-□ Last 5
-□ Full
-□ Summarize every ___ turns
+☑ Last 3
 ```
 
 ### Lý do nhóm chọn config này
 
-Trước khi viết, tự hỏi:
-
-- Config này phục vụ tình huống nào tốt nhất? (mùa thấp điểm? night-time? volume cao đột biến?)
-- Trade-off chính là gì? (Rẻ nhưng kém chất lượng? Đắt nhưng chính xác?)
-- Khách hàng nào sẽ hài lòng nhất với config này? Khách nào sẽ thất vọng?
-
 ```text
-(điền 2–3 câu lý do vào đây)
+Config này phù hợp cho travel agency nhỏ hoặc mùa thấp điểm khi cần tối ưu chi phí. Phần lớn tourist chỉ hỏi FAQ đơn giản như thời tiết, địa điểm, food nên GPT-4o-mini là đủ tốt.
+
+Nhóm vẫn bật selective web search cho weather và visa vì đây là hai loại thông tin thay đổi liên tục. Last 3 turns giúp giảm token cost và giữ response nhanh hơn.
 ```
 
 ### Rủi ro lớn nhất của config này
 
 ```text
-(điền 1 câu rủi ro — ví dụ: "Visa info có thể outdated nếu web OFF",
- "Khách quên context khi history Last 3", "Cost spike nếu volume tăng đột biến")
+Chatbot có thể quên các thông tin quan trọng như budget hoặc itinerary nếu conversation kéo dài hơn 4–5 turns.
 ```
 
 ---
@@ -80,7 +70,7 @@ Trước khi viết, tự hỏi:
 **Tên config**:
 
 ```text
-(điền tên vào đây)
+Luxury Travel Concierge
 ```
 
 ### 3 Knobs
@@ -88,37 +78,34 @@ Trước khi viết, tự hỏi:
 **① Model tier**:
 
 ```text
-Response model: __________________ → giá $_____ / $_____  per 1M tokens
-Classifier model: __________________ → giá $_____ / $_____  per 1M tokens (hoặc keyword)
+Response model: Claude Sonnet 4.6 → giá $3.00 / $15.00 per 1M tokens
+Classifier model: GPT-4o-mini → giá $0.15 / $0.60 per 1M tokens
 ```
 
 **② Web search**:
 
 ```text
-□ OFF
-□ ON selective — bật cho intent: __________________
-□ ON broad
+☑ ON broad
 ```
 
 **③ History management**:
 
 ```text
-□ Last 3
-□ Last 5
-□ Full
-□ Summarize every ___ turns
+☑ Full
 ```
 
 ### Lý do nhóm chọn config này
 
 ```text
-(điền 2–3 câu lý do vào đây)
+Config này hướng tới khách VIP hoặc khách đặt private/custom tours. Claude Sonnet cho khả năng conversation tự nhiên hơn, xử lý itinerary dài và nhiều constraints tốt hơn.
+
+Web search broad giúp đảm bảo mọi thông tin luôn updated, đặc biệt cho events, weather hoặc visa changes. Full history giúp chatbot nhớ toàn bộ context khi khách chat dài nhiều lượt.
 ```
 
 ### Rủi ro lớn nhất của config này
 
 ```text
-(điền 1 câu rủi ro)
+Cost sẽ tăng rất nhanh nếu volume conversation lớn hoặc khách chat quá dài.
 ```
 
 ---
@@ -128,7 +115,7 @@ Classifier model: __________________ → giá $_____ / $_____  per 1M tokens (ho
 **Tên config**:
 
 ```text
-(điền tên vào đây)
+Smart Hybrid Assistant
 ```
 
 ### 3 Knobs
@@ -136,61 +123,65 @@ Classifier model: __________________ → giá $_____ / $_____  per 1M tokens (ho
 **① Model tier**:
 
 ```text
-Response model: __________________ → giá $_____ / $_____  per 1M tokens
-Classifier model: __________________ → giá $_____ / $_____  per 1M tokens (hoặc keyword)
+Response model:
+- GPT-4o-mini cho FAQ / Guide
+- DeepSeek V4 Pro cho Visa / Complaint / Itinerary
+
+→ giá:
+GPT-4o-mini: $0.15 / $0.60
+DeepSeek V4 Pro: $1.74 / $3.48
+
+Classifier model: keyword + lightweight classifier → gần như $0
 ```
 
 **② Web search**:
 
 ```text
-□ OFF
-□ ON selective — bật cho intent: __________________
-□ ON broad
+☑ ON selective — bật cho intent: Weather, Visa
 ```
 
 **③ History management**:
 
 ```text
-□ Last 3
-□ Last 5
-□ Full
-□ Summarize every ___ turns
+☑ Last 5
 ```
 
 ### Lý do nhóm chọn config này
 
 ```text
-(điền 2–3 câu lý do vào đây)
+Nhóm nghĩ đây là config thực tế nhất cho production vì balance được quality và cost. Các câu FAQ đơn giản dùng model rẻ để tiết kiệm, còn các intent khó hơn như visa hoặc complaint mới dùng strong model.
+
+Selective web search giúp tránh outdated information nhưng không làm cost tăng quá nhiều. Last 5 turns đủ để chatbot nhớ budget, family size hoặc travel style của tourist.
 ```
 
 ### Rủi ro lớn nhất của config này
 
 ```text
-(điền 1 câu rủi ro)
+Routing sai intent có thể khiến câu hỏi khó bị gửi sang cheap model và làm giảm chất lượng trả lời.
 ```
 
 ---
 
-## Config 4 (optional — nếu thời gian dư)
-
-Nhóm có thể thiết kế thêm config thứ 4 để có thêm điểm so sánh. Không bắt buộc.
+## Config 4 (optional)
 
 **Tên config**:
 
 ```text
-(điền tên vào đây)
+Long Conversation Optimizer
 ```
 
 ### 3 Knobs
 
 ```text
-Model: ___    Web: ___    History: ___
+Model: Gemini 2.5 Flash
+Web: ON selective
+History: Summarize every 5 turns
 ```
 
 ### Lý do
 
 ```text
-(điền 1–2 câu)
+Config này phù hợp với các conversation dài như planning full itinerary nhiều ngày. Summarization giúp giảm token cost ở các cuộc hội thoại dài nhưng vẫn giữ được context quan trọng.
 ```
 
 ---

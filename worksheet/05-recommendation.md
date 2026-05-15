@@ -25,20 +25,17 @@ Trước khi viết, thảo luận 1 phút:
 - Nếu sếp nói "chỉ deploy 1 config thôi" — chọn cái nào?
 
 ```text
-(điền 2–4 câu recommend vào đây — ví dụ:
-"Nhóm recommend Smart Mix cho cả 2 scenarios. Lý do: monthly cost vẫn rẻ hơn human
-95% ở cả low và high season, mà quality estimate Medium-High đủ phục vụ khách
-mong đợi info chính xác. Có thể cân nhắc Premium ở high season nếu booking convert
-rate tăng đủ để justify cost." — đây là ví dụ, đừng copy.)
+Nhóm recommend Config 3 — Smart Hybrid Assistant làm config chính để deploy quanh năm. 
+Lý do là cost vẫn thấp: $189/tháng ở Scenario A và $1,332/tháng ở Scenario B, rẻ hơn human lần lượt 23.8× và 13.5×. 
+So với Budget Bot, Smart Hybrid đắt hơn nhưng quality cao hơn vì dùng model mạnh cho visa, complaint và itinerary — những intent dễ ảnh hưởng trực tiếp đến niềm tin và booking.
 ```
 
 ### Câu 2 — So với human baseline $0.50/conv → tiết kiệm bao nhiêu? Có đắt hơn human ở chỗ nào không?
 
 ```text
-(điền vào đây — ví dụ:
-"Tiết kiệm ___% ở Scenario A, ___% ở Scenario B. Tổng tiết kiệm $___/tháng.
-Tuy nhiên cần justify thêm vì AI không thể replace human cho booking convert —
-1 sales agent vẫn cần thiết. AI thắng ở 24/7 + đa ngôn ngữ + handle volume peak.")
+Smart Hybrid tiết kiệm 95.8% ở Scenario A và 92.6% ở Scenario B. 
+Tính theo tháng, chi phí AI chỉ $189 so với $4,500 ở low season, và $1,332 so với $18,000 ở high season. 
+Không có scenario nào AI đắt hơn human, nhưng AI không nên thay thế hoàn toàn sales agent vì booking và complaint vẫn cần người thật xử lý để tăng conversion và giữ trải nghiệm khách hàng.
 ```
 
 ### Câu 3 — Khi nào nên upgrade / downgrade config?
@@ -50,11 +47,11 @@ Trước khi viết, tự hỏi:
 - Có signal nào báo nên chuyển sang Premium? (mùa cao điểm bắt đầu? customer feedback?)
 
 ```text
-(điền vào đây — ví dụ:
-"Nên upgrade lên Premium khi: monthly conv > 50,000 + quality complaint > 5%
-+ approaching peak season (Tết, lễ hội). Nên downgrade về Budget khi: monthly
-conv < 5,000 + low season + revenue per booking < $X.")
+Nên upgrade lên Luxury Travel Concierge khi bước vào mùa cao điểm, có nhiều khách VIP/private tour, hoặc khi complaint về chất lượng câu trả lời vượt khoảng 5%. 
+Ngược lại, có thể downgrade về Budget Backpacker Bot ở low season nếu phần lớn câu hỏi chỉ là FAQ đơn giản như điểm đến, food, weather và volume thấp. 
+Nếu chỉ được chọn 1 config cố định, Smart Hybrid vẫn hợp lý nhất vì giữ được quality cao mà monthly cost Scenario B vẫn chỉ $1,332.
 ```
+
 
 ### Câu 4 — Rủi ro lớn nhất của config được chọn?
 
@@ -65,12 +62,11 @@ Trước khi viết, tự hỏi:
 - Rủi ro về business? (khách bị bot trả lời sai → bad review → mất khách?)
 - Có mitigation plan không?
 
+
 ```text
-(điền vào đây — ví dụ:
-"Rủi ro chính: provider tăng giá API → margin co lại. Mitigation: monitor cost
-hàng tháng, có sẵn fallback sang DeepSeek V4 Pro nếu OpenAI/Anthropic tăng >30%.
-Rủi ro phụ: web search OFF có thể dẫn đến visa info outdated → mitigation:
-update RAG hàng tuần cho mục visa, fallback sang human nếu confidence < 0.7.")
+Rủi ro lớn nhất của Smart Hybrid là routing sai intent: câu hỏi visa hoặc itinerary phức tạp có thể bị gửi sang model rẻ, làm giảm chất lượng trả lời. 
+Mitigation là đặt rule rõ: visa, weather, complaint, itinerary dài hoặc câu có booking intent phải được chuyển sang model mạnh hoặc human. 
+Rủi ro phụ là thông tin visa/weather outdated, nên web search phải bật selective cho hai intent này và bot cần handoff nếu confidence thấp.
 ```
 
 ---
@@ -80,85 +76,99 @@ update RAG hàng tuần cho mục visa, fallback sang human nếu confidence < 0
 Tổng hợp 4 câu trên thành 1 paragraph 5–7 câu — đây là phần nhóm sẽ đọc / chiếu khi present.
 
 ```text
-(viết paragraph vào đây — đọc to lên để check có gọn không, có rõ không.
- Nếu lan man → cắt xuống. Nếu trống rỗng → bổ sung số cụ thể.)
+Nhóm recommend Smart Hybrid Assistant là config phù hợp nhất để deploy cho travel chatbot vì balance tốt giữa cost, quality và speed. Config này dùng GPT-4o-mini cho FAQ đơn giản và DeepSeek V4 Pro cho visa, complaint và itinerary phức tạp, giúp tối ưu chi phí mà vẫn giữ chất lượng trả lời cao. Monthly cost chỉ khoảng $189 ở low season và $1,332 ở high season, vẫn rẻ hơn human support lần lượt 23.8× và 13.5×. Ngoài ra, selective web search cho weather và visa giúp chatbot tránh trả lời outdated information mà không làm cost tăng quá nhiều. Nhóm cũng chọn Last 5 turns để chatbot nhớ đủ context như budget, family size hoặc travel style của tourist. Tuy nhiên, booking và complaint quan trọng vẫn nên handoff sang human để đảm bảo conversion và customer experience. Đây là config phù hợp nhất cho production thực tế vì vừa scalable vừa đủ chất lượng cho phần lớn khách du lịch quốc tế.
 ```
 
 ---
-
 ## Chuẩn bị Present (5 phút)
-
-Chia 5 phút thành 5 nhịp. 1 người trong nhóm chính phụ trách 1 nhịp. Người còn lại trả lời Q&A.
 
 ### Nhịp 0:00 – 0:30 — Base flow + 3 knobs đã chọn
 
-Ai trình bày: __________
+Ai trình bày: Thành viên 1
 
 Nói gì:
 
 ```text
-(viết 2 câu vào đây)
+Nhóm xây dựng chatbot cho travel agency với flow gồm: intent classification → routing → context assembly → response generation. 
+Ba knobs chính nhóm phân tích là model tier, web search và history management vì đây là ba yếu tố ảnh hưởng trực tiếp đến cost, quality và speed.
 ```
+
+---
 
 ### Nhịp 0:30 – 1:00 — Config overview
 
-Ai trình bày: __________
+Ai trình bày: Thành viên 1
 
 Nói gì (đọc nhanh tên + knobs 3 configs):
 
 ```text
-(viết 3 dòng vào đây)
+Config 1 — Budget Backpacker Bot: GPT-4o-mini, web selective, Last 3 turns.
+
+Config 2 — Luxury Travel Concierge: Claude Sonnet, web broad, Full history.
+
+Config 3 — Smart Hybrid Assistant: mix GPT-4o-mini + DeepSeek V4 Pro, web selective, Last 5 turns.
 ```
+
+---
 
 ### Nhịp 1:00 – 2:00 — Cost comparison
 
-Ai trình bày: __________
+Ai trình bày: Thành viên 2
 
 Nói gì (chiếu bảng so sánh, highlight rẻ nhất / đắt nhất):
 
 ```text
-(viết 3–4 câu vào đây)
+Config rẻ nhất là Budget Backpacker Bot với monthly cost chỉ khoảng $468 ở Scenario B, rẻ hơn human support khoảng 38.5 lần. 
+Config đắt nhất là Luxury Travel Concierge với khoảng $3,888/tháng ở Scenario B, nhưng vẫn rẻ hơn human khoảng 4.6 lần. 
+Smart Hybrid nằm ở giữa với $1,332/tháng, nhưng quality estimate gần premium hơn là budget. 
+Điều này cho thấy có thể tăng quality đáng kể mà cost vẫn thấp hơn human support rất nhiều.
 ```
+
+---
 
 ### Nhịp 2:00 – 3:00 — Key insight
 
-Ai trình bày: __________
+Ai trình bày: Thành viên 2
 
 Nói gì (knob nào ảnh hưởng cost nhiều nhất + tại sao):
 
 ```text
-(viết 2–3 câu vào đây)
+Insight lớn nhất của nhóm là model tier ảnh hưởng cost mạnh hơn nhiều so với web search hoặc history. 
+Đổi từ GPT-4o-mini sang Claude Sonnet làm monthly cost tăng khoảng 4–8 lần, trong khi selective web search chỉ tăng vài cent mỗi conversation. 
+Ngoài ra, Scenario B không tăng cost quá mạnh vì gần một nửa intent là booking hoặc complaint được handoff sang human.
 ```
+
+---
 
 ### Nhịp 3:00 – 4:30 — Recommendation + justification
 
-Ai trình bày: __________ (thường là người mạnh nhất trong nhóm)
+Ai trình bày: Thành viên 1
 
-Nói gì (đọc paragraph "Final answer" ở trên):
+Nói gì:
 
 ```text
-(copy paragraph vào đây)
+Nhóm recommend Smart Hybrid Assistant là config phù hợp nhất để deploy cho travel chatbot vì balance tốt giữa cost, quality và speed. Config này dùng GPT-4o-mini cho FAQ đơn giản và DeepSeek V4 Pro cho visa, complaint và itinerary phức tạp, giúp tối ưu chi phí mà vẫn giữ chất lượng trả lời cao. Monthly cost chỉ khoảng $189 ở low season và $1,332 ở high season, vẫn rẻ hơn human support lần lượt 23.8× và 13.5×. Ngoài ra, selective web search cho weather và visa giúp chatbot tránh trả lời outdated information mà không làm cost tăng quá nhiều. Nhóm cũng chọn Last 5 turns để chatbot nhớ đủ context như budget, family size hoặc travel style của tourist. Tuy nhiên, booking và complaint quan trọng vẫn nên handoff sang human để đảm bảo conversion và customer experience. Đây là config phù hợp nhất cho production thực tế vì vừa scalable vừa đủ chất lượng cho phần lớn khách du lịch quốc tế.
 ```
+
+---
 
 ### Nhịp 4:30 – 5:00 — Hardest question prep
 
-Ai trình bày: __________
+Ai trình bày: Thành viên 2
 
 Nhóm dự đoán câu hỏi khó nhất sẽ bị hỏi là gì?
 
 ```text
-(viết câu hỏi vào đây — ví dụ:
-"Tại sao không chọn Budget Bot cho high season? Premium tăng cost nhiều hơn
-benefit có không?")
+"Tại sao không chọn luôn Budget Backpacker Bot nếu nó rẻ hơn nhiều?"
 ```
 
 Câu trả lời sẵn:
 
 ```text
-(viết câu trả lời 2–3 câu)
+Budget Backpacker Bot phù hợp cho FAQ đơn giản nhưng dễ fail ở các intent quan trọng như visa, itinerary hoặc complaint. 
+Trong travel business, chỉ cần một số câu trả lời sai hoặc thiếu context cũng có thể làm giảm trust và mất booking. 
+Smart Hybrid tăng cost không quá nhiều nhưng cải thiện quality đáng kể ở các tình huống ảnh hưởng trực tiếp đến customer experience.
 ```
-
----
 
 ## Q&A — 2 phút sau khi present xong
 
@@ -171,11 +181,12 @@ Sẵn sàng cho 1 câu từ class + 1 câu từ instructor. Không cần lo lắ
 3. *"So với nhóm X (vừa present trước) — tại sao nhóm bạn chọn khác?"*
 
 Suy nghĩ trước câu trả lời ngắn:
-
 ```text
-1. (viết câu trả lời ngắn)
-2. (viết câu trả lời ngắn)
-3. (viết câu trả lời ngắn — phụ thuộc nhóm X present gì, có thể skip)
+1. Knob ảnh hưởng cost lớn nhất là model tier vì đổi từ cheap model sang strong model làm token cost tăng khoảng 4–8 lần, lớn hơn nhiều so với web search hoặc history.
+
+2. Nếu provider tăng giá API ×2 thì config vẫn sống được vì Smart Hybrid hiện vẫn rẻ hơn human support khoảng 13.5× ở Scenario B. Ngoài ra nhóm có thể fallback sang model rẻ hơn như DeepSeek Flash hoặc giảm web usage để giữ margin.
+
+3. Nhóm chọn Smart Hybrid thay vì full premium vì travel chatbot có rất nhiều FAQ đơn giản không cần model mạnh. Mix model theo intent giúp giữ quality ở các case quan trọng nhưng vẫn tối ưu cost cho production thực tế.
 ```
 
 ---

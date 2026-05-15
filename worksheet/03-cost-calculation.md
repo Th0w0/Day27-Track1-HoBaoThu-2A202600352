@@ -132,16 +132,15 @@ Nếu savings ÂM → AI đắt hơn human → cần justify (24/7? đa ngôn ng
 ## Điền số cho từng config
 
 Dùng AI tính xong, copy số vào đây. Đừng quên kiểm 1 lần xem số có hợp lý không.
-
-### Config 1 — _________________________
+## Config 1 — Budget Backpacker Bot
 
 | Item | Scenario A (4 turns) | Scenario B (7 turns) |
 |---|---|---|
-| Cost / conversation (avg) | $________ | $________ |
-| Monthly cost | $________ | $________ |
+| Cost / conversation (avg) | $0.008 | $0.013 |
+| Monthly cost | $72 | $468 |
 | Human baseline | $4,500 | $18,000 |
-| **Rẻ hơn human ___×** | _____× | _____× |
-| **Savings %** | ___% | ___% |
+| **Rẻ hơn human ___×** | 62.5× | 38.5× |
+| **Savings %** | 98.4% | 97.4% |
 
 **Sanity check** (trả lời cho nhóm trước khi đi tiếp):
 
@@ -149,68 +148,68 @@ Dùng AI tính xong, copy số vào đây. Đừng quên kiểm 1 lần xem số
 - Monthly có hợp lý không? (cheap config thường $100–$300, premium config có thể đến $3,000+)
 
 ```text
-(điền nhận xét nhanh — "có vẻ ổn", "Scenario B đắt gấp X lần A vì ...",
- hoặc "phải tính lại vì cost/conv $X.XX không hợp lý")
+Con số khá hợp lý vì config dùng GPT-4o-mini + Last 3 nên token cost thấp. 
+Scenario B tăng rõ vì conversation dài hơn và volume ×4.
 ```
 
 ---
 
-### Config 2 — _________________________
+## Config 2 — Luxury Travel Concierge
 
 | Item | Scenario A | Scenario B |
 |---|---|---|
-| Cost / conversation (avg) | $________ | $________ |
-| Monthly cost | $________ | $________ |
-| **Rẻ hơn human ___×** | _____× | _____× |
-| **Savings %** | ___% | ___% |
+| Cost / conversation (avg) | $0.061 | $0.108 |
+| Monthly cost | $549 | $3,888 |
+| **Rẻ hơn human ___×** | 8.2× | 4.6× |
+| **Savings %** | 87.8% | 78.4% |
 
 **Sanity check**:
 
 ```text
-(điền nhận xét nhanh)
+Premium config đắt hơn khá nhiều do Claude Sonnet + full history + web broad. 
+Tuy nhiên vẫn rẻ hơn human support đáng kể.
 ```
 
 ---
 
-### Config 3 — _________________________
+## Config 3 — Smart Hybrid Assistant
 
 | Item | Scenario A | Scenario B |
 |---|---|---|
-| Cost / conversation (avg) | $________ | $________ |
-| Monthly cost | $________ | $________ |
-| **Rẻ hơn human ___×** | _____× | _____× |
-| **Savings %** | ___% | ___% |
+| Cost / conversation (avg) | $0.021 | $0.037 |
+| Monthly cost | $189 | $1,332 |
+| **Rẻ hơn human ___×** | 23.8× | 13.5× |
+| **Savings %** | 95.8% | 92.6% |
 
 **Sanity check**:
 
 ```text
-(điền nhận xét nhanh)
+Config này có vẻ balance nhất giữa quality và cost. 
+Scenario B tăng cost nhưng vẫn trong mức hợp lý nhờ selective routing.
 ```
 
 ---
 
-### Config 4 (optional)
+## Config 4 — Long Conversation Optimizer
 
 | Item | Scenario A | Scenario B |
 |---|---|---|
-| Cost / conversation (avg) | $________ | $________ |
-| Monthly cost | $________ | $________ |
-| **Rẻ hơn human ___×** | _____× | _____× |
-| **Savings %** | ___% | ___% |
+| Cost / conversation (avg) | $0.017 | $0.028 |
+| Monthly cost | $153 | $1,008 |
+| **Rẻ hơn human ___×** | 29.4× | 17.8× |
+| **Savings %** | 96.6% | 94.4% |
 
 ---
 
 ## Quality + Speed estimate (qualitative)
 
 Mỗi config — estimate Low / Medium / High. Không có công cụ đo chính xác trong lab, ước tính dựa trên model tier + web search + history.
-
-| Config | Quality (Low/Med/High) | Speed (Low/Med/High) | Lý do |
+| Config | Quality | Speed | Lý do |
 |---|---|---|---|
-| 1: ___ | ___ | ___ | (1 câu) |
-| 2: ___ | ___ | ___ | (1 câu) |
-| 3: ___ | ___ | ___ | (1 câu) |
-| 4: ___ | ___ | ___ | (1 câu) |
-
+| 1: Budget Backpacker Bot | Medium | High | Model rẻ + history ngắn nên nhanh nhưng đôi khi quên context |
+| 2: Luxury Travel Concierge | High | Low | Strong model + web broad + full history làm response tốt nhưng chậm |
+| 3: Smart Hybrid Assistant | High | Medium | Mix model giúp giữ quality cao mà vẫn tối ưu speed |
+| 4: Long Conversation Optimizer | Medium-High | Medium | Summarization giúp conversation dài ổn định hơn nhưng thêm latency nhẹ |
 **Hướng dẫn ước tính**:
 
 - **Quality**: Cheap model → Low (70%). Strong model → High (88%). Web search bật → Quality tăng vì info real-time. History Full → Quality tốt hơn ở conversation dài.

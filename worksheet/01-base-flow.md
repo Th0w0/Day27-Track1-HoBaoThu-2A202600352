@@ -25,7 +25,55 @@ Nếu chưa hiểu → quay lại đọc lại 1 lần nữa. Đừng đi tiếp
 Vẽ flow ra giấy hoặc trên bảng (1 thành viên vẽ, cả nhóm góp ý). Có thể dùng ASCII đơn giản:
 
 ```text
-(vẽ flow của nhóm vào đây — hoặc dán link ảnh chụp bảng)
+Tourist opens website chatbot
+          │
+          ▼
+
+┌─────────────────────────────┐
+│ Detect user need            │
+│ (What is the tourist asking?)│
+└─────────────┬───────────────┘
+              │
+    ┌─────────┼─────────┬─────────┐
+    ▼         ▼         ▼         ▼
+
+ Travel Info  Live Info  Booking  Problems
+ (food, city, (weather,  request  / bad exp
+ itinerary)   events)             
+
+    │            │         │         │
+    ▼            ▼         ▼         ▼
+
+ Use KB      Search Web  Send to  Human support
+ + RAG       for latest  Sales    / manager
+             updates
+
+    │            │
+    └──────┬─────┘
+           ▼
+
+┌─────────────────────────────┐
+│ Build AI context            │
+│                             │
+│ - System instructions       │
+│ - Previous messages         │
+│ - Tourist current message   │
+│ - KB results                │
+│ - Web results (if needed)   │
+└─────────────┬───────────────┘
+              │
+              ▼
+
+┌─────────────────────────────┐
+│ AI generates response       │
+│                             │
+│ - Answer tourist question   │
+│ - Recommend places          │
+│ - Ask follow-up questions   │
+│ - Or transfer to human      │
+└─────────────────────────────┘
+
+
 ```
 
 Khi vẽ, đảm bảo flow có 4 điểm:
@@ -48,104 +96,103 @@ Trước khi điền vào ô bên dưới, đọc nhanh mục **3. Decision Poin
 - Knob 1 — Model tier: model rẻ và model mạnh chênh bao nhiêu lần? Có thể mix theo intent không?
 - Knob 2 — Web search: intent nào *cần* real-time? intent nào không cần?
 - Knob 3 — History: 7 lượt chat cuối đắt hay rẻ? Cắt history có rủi ro gì?
-
 ### Knob 1 — Model tier
 
-**Câu hỏi:** Chất lượng câu trả lời ở mức nào?
-
-Options:
+**Suy nghĩ của nhóm:**
 
 ```text
-□ Cheap        (Gemini Flash-Lite / DeepSeek V4 Flash / GPT-4o-mini)
-□ Mid          (Gemini Flash / Claude Haiku 4.5)
-□ Strong       (DeepSeek V4 Pro / Claude Sonnet 4.6)
-□ Premium      (Claude Opus 4.7 / GPT-5.5)
-□ Mix          (model khác nhau cho intent khác nhau — viết rõ)
-```
+Nhóm thấy phần lớn tourist hỏi các câu khá đơn giản như địa điểm, thời tiết, food, budget nên không cần model quá mạnh cho mọi trường hợp. Tuy nhiên, các câu liên quan đến visa, complaint hoặc itinerary dài sẽ cần model tốt hơn để trả lời tự nhiên và chính xác hơn.
 
-**Câu hỏi gợi mở cho nhóm** (trả lời trước khi chọn):
+Nhóm nghĩ nên dùng mix model:
+- Cheap model cho intent classification và FAQ đơn giản
+- Strong hoặc Mid model cho visa / complaint / planning itinerary
 
-- Mục tiêu chính là chi phí thấp hay chất lượng cao?
-- Tourist hỏi câu phức tạp hay đơn giản hơn?
-- Có nên dùng cheap cho phân loại + strong cho trả lời không?
-
-```text
-(viết suy nghĩ của nhóm vào đây — chưa cần chốt option, chỉ cần thấy hướng)
-```
-
-### Knob 2 — Web search
-
-**Câu hỏi:** Có cần thông tin real-time không?
-
-Options:
-
-```text
-□ OFF              (chỉ dùng RAG — knowledge base có sẵn)
-□ ON selective    (bật cho 1–2 intent cần real-time: visa, weather)
-□ ON broad         (bật cho hầu hết intent)
-```
-
-**Câu hỏi gợi mở:**
-
-- Visa policy đổi mỗi tháng — RAG có đủ không?
-- Weather là thông tin real-time tự nhiên — không có lựa chọn khác đúng không?
-- Web search tốn $0.005/call + 800 tokens — bật bừa có lợi không?
-
-```text
-(viết suy nghĩ của nhóm vào đây)
-```
-
-### Knob 3 — History management
-
-**Câu hỏi:** Chatbot cần nhớ bao nhiêu context của conversation?
-
-Options:
-
-```text
-□ Last 3 turns        (nhẹ nhất, dễ quên)
-□ Last 5 turns        (cân bằng)
-□ Full history        (nhớ tất cả, đắt nhất ở conv dài)
-□ Summarize every 5   (nâng cao — cần 1 LLM call phụ để tóm tắt)
-```
-
-**Câu hỏi gợi mở:**
-
-- Tourist hay nói "tôi đã nói budget là $500 ở turn 1" rồi turn 7 hỏi gợi ý — nếu quên thì sao?
-- Scenario A trung bình 4 lượt → full history có tốn nhiều không?
-- Scenario B trung bình 7 lượt → mỗi turn thêm 260 tokens — tổng thêm bao nhiêu?
-
-```text
-(viết suy nghĩ của nhóm vào đây)
+Cách này giúp giảm cost nhưng vẫn giữ được chất lượng ở các tình huống khó.
 ```
 
 ---
 
+### Knob 2 — Web search
+
+**Suy nghĩ của nhóm:**
+
+```text
+Nhóm nghĩ web search nên bật selective thay vì broad.
+
+Lý do:
+- Weather gần như bắt buộc cần realtime data
+- Visa policy có thể thay đổi nên đôi khi cần web search để tránh trả lời outdated
+- Các câu hỏi về destinations, food, culture thì KB + RAG là đủ
+
+Nếu bật web search cho mọi intent sẽ tăng cost không cần thiết và làm chatbot chậm hơn.
+```
+
+---
+
+### Knob 3 — History management
+
+**Suy nghĩ của nhóm:**
+
+```text
+Nhóm thấy tourist thường nhắc lại thông tin cũ như budget, số ngày đi hoặc travelling with family. Nếu chatbot quên các thông tin này thì trải nghiệm sẽ khá tệ.
+
+Scenario A chỉ khoảng 4 turns nên full history chưa quá tốn. Nhưng Scenario B có thể lên 7 turns hoặc hơn, mỗi turn tăng thêm khoảng 260 tokens nên cost sẽ tăng khá nhanh.
+
+Nhóm nghĩ Last 5 turns là lựa chọn cân bằng nhất:
+- Đủ nhớ context quan trọng
+- Không quá tốn token như full history
+- Hầu hết conversation du lịch không quá dài
+```
+---
 ## Bước 4 — Sơ bộ nhóm muốn thử những combo nào?
 
-Chưa cần quyết định cuối cùng. Chỉ cần phác thảo: nhóm dự định thử ít nhất 3 combo khác nhau. Càng khác nhau, càng dễ thấy tradeoff.
-
-**Combo 1 (định hướng cheap)**:
+### Combo 1 (định hướng cheap)
 
 ```text
-Model: ___    Web: ___    History: ___    (đặt tên dự kiến: ___)
+Model: GPT-4o-mini
+Web: OFF
+History: Last 3 turns
+
+(Tên dự kiến: Budget Saver)
 ```
 
-**Combo 2 (định hướng premium)**:
+---
+
+### Combo 2 (định hướng premium)
 
 ```text
-Model: ___    Web: ___    History: ___    (đặt tên dự kiến: ___)
+Model: Claude Sonnet 4.6
+Web: ON broad
+History: Full history
+
+(Tên dự kiến: Premium Travel Assistant)
 ```
 
-**Combo 3 (định hướng balanced / smart mix)**:
+---
+
+### Combo 3 (định hướng balanced / smart mix)
 
 ```text
-Model: ___    Web: ___    History: ___    (đặt tên dự kiến: ___)
+Model: Mix
+- GPT-4o-mini cho classification + FAQ
+- DeepSeek V4 Pro cho visa / itinerary / complaint
+
+Web: ON selective
+History: Last 5 turns
+
+(Tên dự kiến: Smart Hybrid)
 ```
 
-**Combo 4** (optional — nếu nhóm có ý tưởng khác):
+---
+
+### Combo 4 (optional)
 
 ```text
-Model: ___    Web: ___    History: ___    (đặt tên dự kiến: ___)
+Model: Gemini 2.5 Flash
+Web: ON selective
+History: Summarize every 5 turns
+
+(Tên dự kiến: Long Trip Optimized)
 ```
 
 ---
